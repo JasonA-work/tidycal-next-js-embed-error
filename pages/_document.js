@@ -6,7 +6,10 @@ export default function Document() {
     <Html lang="en">
       <Head />
       <body>
-        <Script src="https://asset-tidycal.b-cdn.net//js/embed.js"></Script>
+        <Script
+          strategy="afterInteractive"
+          src="https://asset-tidycal.b-cdn.net//js/embed.js"
+        ></Script>
         <Main />
         <NextScript />
       </body>
