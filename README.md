@@ -1,38 +1,20 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Bug Description
 
-## Getting Started
+When I first reported this issue, I was using NextJS 11 and 12. Since, NextJS 13 came out, I've upgraded my sites to it (but haven't used TidyCal's embed). The bugs I'm reporting here will be slightly different from the ones when I first reported.
 
-First, run the development server:
+## Localhost
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+On the localhost, when we refresh the page (command + R), it will throw a hydration error. This can be quite a blocking factor when developing. When hosted on Vercel, the hydration error doesn't show up.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Script Placement
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+The iframe does not load at all when putting the script anywhere other than "\_document". This is a problem because some pages may not utilize the calendar component, it doesn't make sense to load and run this script on every page regardless of whether the component will be used or not.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Changing pages
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+When you go to another page and then come back to the page where the Calendar is. The iframe will fail to load
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Next/Script Strategy
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Any strategy other than "afterInteractive" doesn't work at all. The one that will really help with website performance is "lazyOnLoad".
+Here's a reference to [next/script docs](https://nextjs.org/docs/api-reference/next/script)
